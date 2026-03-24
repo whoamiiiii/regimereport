@@ -6,7 +6,10 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from .config import CHART_TRADING_DAYS
+try:
+    from .config import CHART_TRADING_DAYS
+except ImportError:
+    from config import CHART_TRADING_DAYS
 
 
 def _regime_label(value: int) -> str:

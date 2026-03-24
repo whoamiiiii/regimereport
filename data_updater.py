@@ -7,13 +7,22 @@ from typing import Dict
 import pandas as pd
 import tushare as ts
 
-from .config import (
-    BACKFILL_TRADING_DAYS,
-    CSV_PATH,
-    INDEX_CODES,
-    INIT_START_DATE,
-    TS_TOKEN,
-)
+try:
+    from .config import (
+        BACKFILL_TRADING_DAYS,
+        CSV_PATH,
+        INDEX_CODES,
+        INIT_START_DATE,
+        TS_TOKEN,
+    )
+except ImportError:
+    from config import (
+        BACKFILL_TRADING_DAYS,
+        CSV_PATH,
+        INDEX_CODES,
+        INIT_START_DATE,
+        TS_TOKEN,
+    )
 
 
 def _validate_token() -> None:

@@ -10,17 +10,30 @@ from email.mime.text import MIMEText
 from email import encoders
 from pathlib import Path
 
-from .config import (
-    EMAIL_PASS,
-    EMAIL_RECEIVERS,
-    EMAIL_SENDER,
-    MAIL_RETRY_COUNT,
-    MAIL_RETRY_DELAY_SECONDS,
-    REPORT_DRY_RUN,
-    SMTP_PORT,
-    SMTP_SERVER,
-    SMTP_TIMEOUT,
-)
+try:
+    from .config import (
+        EMAIL_PASS,
+        EMAIL_RECEIVERS,
+        EMAIL_SENDER,
+        MAIL_RETRY_COUNT,
+        MAIL_RETRY_DELAY_SECONDS,
+        REPORT_DRY_RUN,
+        SMTP_PORT,
+        SMTP_SERVER,
+        SMTP_TIMEOUT,
+    )
+except ImportError:
+    from config import (
+        EMAIL_PASS,
+        EMAIL_RECEIVERS,
+        EMAIL_SENDER,
+        MAIL_RETRY_COUNT,
+        MAIL_RETRY_DELAY_SECONDS,
+        REPORT_DRY_RUN,
+        SMTP_PORT,
+        SMTP_SERVER,
+        SMTP_TIMEOUT,
+    )
 
 
 def parse_receivers(receivers_str: str | None = None) -> list[str]:

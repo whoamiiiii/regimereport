@@ -4,7 +4,10 @@ from pathlib import Path
 
 import pandas as pd
 
-from .config import CSI1000_CODE, CSI300_CODE, MA_LONG, MA_SHORT
+try:
+    from .config import CSI1000_CODE, CSI300_CODE, MA_LONG, MA_SHORT
+except ImportError:
+    from config import CSI1000_CODE, CSI300_CODE, MA_LONG, MA_SHORT
 
 
 def build_regime_from_csv(csv_path: str | Path) -> pd.DataFrame:
