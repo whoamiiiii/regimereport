@@ -7,6 +7,11 @@ on:
   
   # 支持手动触发
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: '仅测试流程，不真实发送邮件'
+        required: false
+        default: 'true'
 
 jobs:
   regime-report:
@@ -38,8 +43,9 @@ jobs:
           SMTP_TIMEOUT: ${{ secrets.SMTP_TIMEOUT }}
           MAIL_RETRY_COUNT: ${{ secrets.MAIL_RETRY_COUNT }}
           MAIL_RETRY_DELAY_SECONDS: ${{ secrets.MAIL_RETRY_DELAY_SECONDS }}
+          REPORT_DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
         run: |
-          python -m regimereport
+          python -m trash.email.regimereport.main
 
       - name: 提交更新的数据文件
         if: success()
