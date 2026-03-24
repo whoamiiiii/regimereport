@@ -16,6 +16,8 @@ on:
 jobs:
   regime-report:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # 允许 push 代码
     
     steps:
       - uses: actions/checkout@v4
