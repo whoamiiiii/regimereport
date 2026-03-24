@@ -21,9 +21,9 @@ MA_SHORT = 20
 MA_LONG = 60
 CHART_TRADING_DAYS = 30
 
-SMTP_TIMEOUT = int(os.getenv("SMTP_TIMEOUT", "30"))
-MAIL_RETRY_COUNT = int(os.getenv("MAIL_RETRY_COUNT", "3"))
-MAIL_RETRY_DELAY_SECONDS = int(os.getenv("MAIL_RETRY_DELAY_SECONDS", "5"))
+SMTP_TIMEOUT = int(os.getenv("SMTP_TIMEOUT") or "30")
+MAIL_RETRY_COUNT = int(os.getenv("MAIL_RETRY_COUNT") or "3")
+MAIL_RETRY_DELAY_SECONDS = int(os.getenv("MAIL_RETRY_DELAY_SECONDS") or "5")
 REPORT_DRY_RUN = os.getenv("REPORT_DRY_RUN", "false").strip().lower() in {"1", "true", "yes", "y", "on"}
 
 TS_TOKEN = os.getenv("TS_TOKEN", "")
@@ -32,7 +32,7 @@ EMAIL_SENDER = os.getenv("EMAIL_SENDER", "")
 EMAIL_PASS = os.getenv("EMAIL_PASS", "")
 EMAIL_RECEIVERS = os.getenv("EMAIL_RECEIVERS", "")
 SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.qq.com")
-SMTP_PORT = int(os.getenv("SMTP_PORT", "465"))
+SMTP_PORT = int(os.getenv("SMTP_PORT") or "465")
 
 
 def ensure_dirs() -> None:
