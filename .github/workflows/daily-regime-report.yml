@@ -30,7 +30,7 @@ jobs:
 
       - name: 安装依赖
         run: |
-          pip install -e .
+          pip install -r requirements.txt
 
       - name: 运行 Regime 报告任务
         env:
@@ -45,7 +45,7 @@ jobs:
           MAIL_RETRY_DELAY_SECONDS: ${{ secrets.MAIL_RETRY_DELAY_SECONDS }}
           REPORT_DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
         run: |
-          python -m trash.email.regimereport.main
+          python run.py
 
       - name: 提交更新的数据文件
         if: success()
