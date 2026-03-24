@@ -4,12 +4,37 @@ from datetime import datetime
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
 import pandas as pd
 
 try:
     from .config import CHART_TRADING_DAYS
 except ImportError:
     from config import CHART_TRADING_DAYS
+
+# 配置中文字体
+def _setup_matplotlib_fonts():
+    """配置 matplotlib 支持中文显示"""
+    # 优先使用开源中文字体（WenQuanYi Micro Hei）
+    font_candidates = [
+        'WenQuanYi Micro Hei',      # Linux 开源中文字体
+        'WenQuanYi Zen Hei',        # Linux 开源中文字体
+        'SimHei',                    # Windows 中文字体
+        'DejaVu Sans',              # 备选字体
+    ]
+    
+    available_fonts = [f.name for f in fm.fontManager.ttflist]
+    
+    for font_name in font_candidates:
+        if any(font_name.lower() in f.lower() for f in available_fonts):
+            plt.rcParams['font.sans-serif'] = [font_name]
+            plt.rcParams['axes.unicode_minus'] = False
+            return
+    
+    # 如果都找不到，至少禁用负号问题
+    plt.rcParams['axes.unicode_minus'] = False
+
+_setup_matplotlib_fonts()
 
 
 def _regime_label(value: int) -> str:
