@@ -52,15 +52,18 @@ jobs:
 
       - name: 提交更新的数据文件
         if: success()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
+          git config --global --add safe.directory ${{ github.workspace }}
           git add data/regime_index_daily.csv
           git add output/
           git add logs/
           if ! git diff --cached --quiet; then
             git commit -m "chore: update regime data and logs - $(date +'%Y-%m-%d %H:%M:%S')"
-            git push
+            git -c http.extraHeader="AUTHORIZATION: Bearer $GITHUB_TOKEN" push
           else
             echo "No changes to commit"
           fi
