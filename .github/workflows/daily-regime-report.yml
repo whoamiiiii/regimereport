@@ -3,7 +3,7 @@ name: Daily Regime Report
 on:
   # 每天北京时间 10:00 运行（UTC 2:00）
   schedule:
-    - cron: '0 2 * * *'  # 调整时间可修改前两个数字
+    - cron: '0 9 * * *'  # 调整时间可修改前两个数字
   
   # 支持手动触发
   workflow_dispatch:
