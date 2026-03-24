@@ -5,11 +5,19 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-from .config import CHART_PATH, CSV_PATH, LOG_DIR, REPORT_DRY_RUN, ensure_dirs
-from .data_updater import update_index_csv
-from .mailer import send_failure_alert, send_main_report
-from .regime_calculator import build_regime_from_csv
-from .report_builder import build_html_report, build_subject, plot_last_month_lines
+# 支持相对导入和绝对导入
+try:
+    from .config import CHART_PATH, CSV_PATH, LOG_DIR, REPORT_DRY_RUN, ensure_dirs
+    from .data_updater import update_index_csv
+    from .mailer import send_failure_alert, send_main_report
+    from .regime_calculator import build_regime_from_csv
+    from .report_builder import build_html_report, build_subject, plot_last_month_lines
+except ImportError:
+    from config import CHART_PATH, CSV_PATH, LOG_DIR, REPORT_DRY_RUN, ensure_dirs
+    from data_updater import update_index_csv
+    from mailer import send_failure_alert, send_main_report
+    from regime_calculator import build_regime_from_csv
+    from report_builder import build_html_report, build_subject, plot_last_month_lines
 
 
 def _setup_logging() -> Path:
