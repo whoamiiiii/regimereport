@@ -1,0 +1,73 @@
+name: Daily Regime Report
+
+on:
+  # 每天北京时间 10:00 运行（UTC 2:00）
+  schedule:
+    - cron: '0 2 * * *'  # 调整时间可修改前两个数字
+  
+  # 支持手动触发
+  workflow_dispatch:
+
+jobs:
+  regime-report:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # 获取完整历史以便提交
+
+      - name: 设置 Python 环境
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: 安装依赖
+        run: |
+          pip install -r requirements.txt
+
+      - name: 运行 Regime 报告任务
+        env:
+          TS_TOKEN: ${{ secrets.TS_TOKEN }}
+          EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
+          EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+          EMAIL_RECEIVERS: ${{ secrets.EMAIL_RECEIVERS }}
+          SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_TIMEOUT: ${{ secrets.SMTP_TIMEOUT }}
+          MAIL_RETRY_COUNT: ${{ secrets.MAIL_RETRY_COUNT }}
+          MAIL_RETRY_DELAY_SECONDS: ${{ secrets.MAIL_RETRY_DELAY_SECONDS }}
+        run: |
+          python -m regimereport
+
+      - name: 提交更新的数据文件
+        if: success()
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/regime_index_daily.csv
+          git add output/
+          git add logs/
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update regime data and logs - $(date +'%Y-%m-%d %H:%M:%S')"
+            git push
+          else
+            echo "No changes to commit"
+          fi
+
+      - name: 上传日志
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: regime-logs
+          path: logs/
+          retention-days: 30
+
+      - name: 上传输出报告
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: regime-reports
+          path: output/
+          retention-days: 30

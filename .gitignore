@@ -1,0 +1,22 @@
+# 项目依赖
+*.egg-info/
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 日志保留在仓库中的任何 .log 文件都是可选的
+# logs/ 目录中的实时日志可以忽略，但保留结构
